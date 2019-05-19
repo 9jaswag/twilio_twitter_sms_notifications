@@ -3,10 +3,9 @@ const twilio = require("twilio");
 
 const accountSid = process.env.TWILIO_SID; // Your Account SID from www.twilio.com/console
 const authToken = process.env.TWILIO_TOKEN; // Your Auth Token from www.twilio.com/console
+const client = new twilio(accountSid, authToken);
 
 const sendSms = body => {
-  const client = new twilio(accountSid, authToken);
-
   client.messages
     .create({
       body: body,

@@ -74,7 +74,8 @@ class Webhook {
       const tweet = eventDetails["text"];
 
       if (eventDetails["in_reply_to_status_id"]) {
-        const message = `@${eventCreator} replied your tweet with: ${tweet}`;
+        const reply = tweet.replace(`@${twitterHandle}`, "");
+        const message = `@${eventCreator} replied your tweet with: ${reply}`;
         sendSms(message);
       } else if (tweet.includes(`RT @${twitterHandle}`)) {
         const message = `@${eventCreator} retweeted: ${tweet}`;
