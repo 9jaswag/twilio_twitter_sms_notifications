@@ -86,7 +86,7 @@ class Webhook {
       }
     }
 
-    res.send("listening");
+    res.status(200).send("listening");
   }
 }
 
