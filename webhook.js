@@ -27,6 +27,7 @@ class Webhook {
 
   static async register(req, res) {
     const webhookUrl = "https://6fc692c8.ngrok.io/webhook";
+    // your webhook url should be https://your-ngrok-forwarding-url/webhook
     // if your webhook URL changes, you have to re-register it and add subscriptions
 
     const twitterClient = new Twit({
@@ -38,15 +39,19 @@ class Webhook {
 
     // delete any existing webhook so as to avoid the error below:
     // 'Too many resources already created.'
-    const { data: existingWebhooks } = await twitterClient.get(
-      "account_activity/all/development/webhooks"
-    );
-
-    existingWebhooks.forEach(webhook => {
-      twitterClient.delete(
-        `account_activity/all/development/webhooks/${webhook.id}`
+    try {
+      const { data: existingWebhooks } = await twitterClient.get(
+        "account_activity/all/development/webhooks"
       );
-    });
+
+      existingWebhooks.forEach(webhook => {
+        twitterClient.delete(
+          `account_activity/all/development/webhooks/${webhook.id}`
+        );
+      });
+    } catch (error) {
+      return res.status(error.statusCode).send({ message: error.message });
+    }
 
     const {
       data: { id }
